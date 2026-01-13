@@ -1,0 +1,15 @@
+flowchart LR
+  app["Mobile App (UI)"]
+  rental["Rental Management Service"]
+  bus[("Event Bus / Message Broker")]
+  billing["Billing & Payments Service"]
+  partner["Partner Management Service"]
+  payment["Payment Provider"]
+
+  app -->|"HTTP commands\nbooking/start/return"| rental
+  rental -->|"Domain events\nRentalStarted, TrailerReturned,\nLateReturnDetected, RentalClosed"| bus
+  bus --> billing
+  bus --> partner
+  billing -->|"Payment capture API"| payment
+  billing -->|"Billing events\nPaymentCaptured, LateFeeAdded,\nReceiptIssued"| bus
+  bus --> rental

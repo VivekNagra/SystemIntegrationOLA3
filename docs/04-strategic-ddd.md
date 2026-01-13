@@ -81,24 +81,31 @@ A key choice is to communicate primarily through **domain events** (published la
 
 ### Context Map diagram
 
+Diagram:
+
+![Context Map](diagrams/context-map.png)
+
+<details><summary>Mermaid source (for regeneration)</summary>
+
 ```mermaid
 flowchart LR
   %% Bounded Contexts
-  ID[Identity / Customer\n(Generic Domain)]:::generic
-  RENTAL[Rental Management\n(Core Domain)]:::core
-  BILL[Billing & Payments\n(Supporting Domain)]:::support
-  PARTNER[Partner Management\n(Supporting Domain)]:::support
+  ID["Identity / Customer\n(Generic Domain)"]:::generic
+  RENTAL["Rental Management\n(Core Domain)"]:::core
+  BILL["Billing & Payments\n(Supporting Domain)"]:::support
+  PARTNER["Partner Management\n(Supporting Domain)"]:::support
 
   %% Relationships (Context Map)
-  ID -->|Upstream identity provider\n(customerId, auth)| RENTAL
-  RENTAL -->|Published Language / Events\nBookingAccepted, RentalStarted,\nTrailerReturned, RentalClosed| BILL
-  RENTAL -->|Published Language / Events\nRentalClosed, LocationUsageRecorded| PARTNER
+  ID -->|"Upstream identity provider\n(customerId, auth)"| RENTAL
+  RENTAL -->|"Published Language / Events\nBookingAccepted, RentalStarted,\nTrailerReturned, RentalClosed"| BILL
+  RENTAL -->|"Published Language / Events\nRentalClosed, LocationUsageRecorded"| PARTNER
 
   %% Styling
   classDef core fill:#e0f2fe,stroke:#0369a1,color:#0f172a;
   classDef support fill:#ecfccb,stroke:#4d7c0f,color:#0f172a;
   classDef generic fill:#f1f5f9,stroke:#475569,color:#0f172a;
 ```
+</details>
 
 ## 4.4 Architectural style (high-level)
 
@@ -121,15 +128,19 @@ C4 diagrams are used to communicate the system design clearly.
 ### 4.5.1 C4 System Context
 Shows the MyTrailer system as a whole and its external actors and systems.
 
-Add your generated diagram here:
+Diagram:
+
+![C4 System Context](diagrams/c4-system-context.png)
+
+<details><summary>Mermaid source (for regeneration)</summary>
 
 ```mermaid
 flowchart LR
   %% People and Systems
-  customer([Customer\nMobile App User]):::person
-  partner([Partner Company\n(Locations)]):::external
-  payment([Payment Provider\n(External System)]):::external
-  system[[MyTrailer System]]
+  customer(["Customer\nMobile App User"]):::person
+  partner(["Partner Company\n(Locations)"]):::external
+  payment(["Payment Provider\n(External System)"]):::external
+  system[["MyTrailer System"]]
 
   %% Flows
   customer <--> system
@@ -137,16 +148,17 @@ flowchart LR
   system <--> payment
 
   %% Labels
-  customer ---|Booking, start, return,\nreceipts| system
-  partner ---|Location data,\nusage reporting| system
-  system ---|Capture payment| payment
+  customer ---|"Booking, start, return,\nreceipts"| system
+  partner ---|"Location data,\nusage reporting"| system
+  system ---|"Capture payment"| payment
 
   %% Styling
   classDef person fill:#fef9c3,stroke:#eab308,color:#0f172a;
   classDef external fill:#ede9fe,stroke:#7c3aed,color:#0f172a;
 ```
+</details>
 
-Minimum elements to include in the System Context diagram:
+Elements shown:
 - Customer (mobile app user)
 - Partner company (locations hosting trailers)
 - Payment provider (external)
@@ -155,28 +167,32 @@ Minimum elements to include in the System Context diagram:
 ### 4.5.2 C4 Container diagram
 Shows the internal containers/services and their interactions.
 
-Add your generated diagram here:
+Diagram:
+
+![C4 Container Diagram](diagrams/c4-container.png)
+
+<details><summary>Mermaid source (for regeneration)</summary>
 
 ```mermaid
 flowchart LR
   %% External
-  payment[Payment Provider\n(External API)]:::external
+  payment["Payment Provider\n(External API)"]:::external
 
   %% System Boundary
   subgraph MyTrailer System
-    app[Mobile App / UI\n(Frontend)]:::container
-    rental[Rental Management Service]:::core
-    billing[Billing & Payments Service]:::container
-    partner[Partner Management Service]:::container
-    bus[(Event Bus / Message Broker)]:::infra
+    app["Mobile App / UI\n(Frontend)"]:::container
+    rental["Rental Management Service"]:::core
+    billing["Billing & Payments Service"]:::container
+    partner["Partner Management Service"]:::container
+    bus[("Event Bus / Message Broker")]:::infra
   end
 
   %% Flows
-  app -->|HTTP/REST\nbooking/start/return| rental
-  rental -->|Publish events| bus
-  billing -->|Subscribe rental events\nBilling events| bus
-  partner -->|Subscribe RentalClosed\nusage events| bus
-  billing -->|Payment capture API| payment
+  app -->|"HTTP/REST\nbooking/start/return"| rental
+  rental -->|"Publish events"| bus
+  billing -->|"Subscribe rental events\nBilling events"| bus
+  partner -->|"Subscribe RentalClosed\nusage events"| bus
+  billing -->|"Payment capture API"| payment
 
   %% Styling
   classDef container fill:#e0f2fe,stroke:#0369a1,color:#0f172a;
@@ -184,8 +200,9 @@ flowchart LR
   classDef infra fill:#f8fafc,stroke:#475569,color:#0f172a;
   classDef external fill:#ede9fe,stroke:#7c3aed,color:#0f172a;
 ```
+</details>
 
-Minimum containers to include:
+Elements shown:
 - Mobile App / UI
 - Rental Management Service
 - Billing & Payments Service
@@ -210,47 +227,10 @@ The detailed event payloads are described later in Tactical DDD and Message Flow
 - Rental events represent domain facts (“what happened”)
 - Billing events represent financial outcomes (“what was charged/paid”)
 
-## 4.7 Diagram generation prompts (for AI tools)
+## 4.7 Diagram sources and regeneration
 
-Use the prompts below to generate the diagrams referenced in this section.
-
-### Prompt A — Context Map (`context-map.png`)
-Create a DDD context map for “MyTrailer short-term trailer rental”. Include bounded contexts as boxes:
-1) Rental Management (Core Domain)
-2) Billing & Payments (Supporting Domain)
-3) Partner Management (Supporting Domain)
-4) Identity/Customer (Generic Domain)
-Draw relationships:
-- Identity → Rental Management (upstream identity provider)
-- Rental Management → Billing & Payments (events trigger billing)
-- Rental Management → Partner Management (events trigger usage recording)
-Label relationship style as “Published Language / Event-driven” for the two downstream consumers. Use a clean, minimal professional style with clear arrows and short captions.
-
-### Prompt B — C4 System Context (`c4-system-context.png`)
-Create a C4 System Context diagram for “MyTrailer short-term trailer rental”. Show:
-- Person: Customer using the MyTrailer mobile app
-- External system: Payment Provider
-- External actor: Partner company (hosts trailer locations)
-- System: MyTrailer System
-Arrows:
-- Customer ↔ MyTrailer System (booking, start rental, return, view receipts)
-- MyTrailer System ↔ Payment Provider (capture payment)
-- Partner company ↔ MyTrailer System (locations/trailer inventory info and usage reporting)
-Clean, readable layout, minimal colors, export as PNG.
-
-### Prompt C — C4 Container (`c4-container.png`)
-Create a C4 Container diagram for “MyTrailer”. Inside the MyTrailer system boundary include:
-- Mobile App / UI
-- Rental Management Service
-- Billing & Payments Service
-- Partner Management Service
-- Event Bus / Message Broker
-Outside boundary include:
-- Payment Provider (external)
-Relationships:
-- Mobile App calls Rental Management Service (HTTP/REST)
-- Rental Management publishes events to Event Bus
-- Billing & Payments subscribes to Rental events; publishes billing events
-- Partner Management subscribes to RentalClosed (usage)
-- Billing & Payments integrates with Payment Provider for payment capture
-Label arrows with protocols (HTTP for app calls, events/pub-sub for internal, API for payment provider). Clean style, readable text, export PNG.
+- Mermaid sources live in `docs/diagrams/*.mmd`.
+- Regenerate PNGs with:
+  - `npx @mermaid-js/mermaid-cli -i docs/diagrams/context-map.mmd -o docs/diagrams/context-map.png`
+  - `npx @mermaid-js/mermaid-cli -i docs/diagrams/c4-system-context.mmd -o docs/diagrams/c4-system-context.png`
+  - `npx @mermaid-js/mermaid-cli -i docs/diagrams/c4-container.mmd -o docs/diagrams/c4-container.png`

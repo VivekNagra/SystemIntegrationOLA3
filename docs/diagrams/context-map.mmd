@@ -1,0 +1,16 @@
+flowchart LR
+  %% Bounded Contexts
+  ID["Identity / Customer\n(Generic Domain)"]:::generic
+  RENTAL["Rental Management\n(Core Domain)"]:::core
+  BILL["Billing & Payments\n(Supporting Domain)"]:::support
+  PARTNER["Partner Management\n(Supporting Domain)"]:::support
+
+  %% Relationships (Context Map)
+  ID -->|"Upstream identity provider\n(customerId, auth)"| RENTAL
+  RENTAL -->|"Published Language / Events\nBookingAccepted, RentalStarted,\nTrailerReturned, RentalClosed"| BILL
+  RENTAL -->|"Published Language / Events\nRentalClosed, LocationUsageRecorded"| PARTNER
+
+  %% Styling
+  classDef core fill:#e0f2fe,stroke:#0369a1,color:#0f172a;
+  classDef support fill:#ecfccb,stroke:#4d7c0f,color:#0f172a;
+  classDef generic fill:#f1f5f9,stroke:#475569,color:#0f172a;

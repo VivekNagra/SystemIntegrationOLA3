@@ -1,0 +1,25 @@
+flowchart LR
+  %% External
+  payment["Payment Provider\n(External API)"]:::external
+
+  %% System Boundary
+  subgraph MyTrailer System
+    app["Mobile App / UI\n(Frontend)"]:::container
+    rental["Rental Management Service"]:::core
+    billing["Billing & Payments Service"]:::container
+    partner["Partner Management Service"]:::container
+    bus[("Event Bus / Message Broker")]:::infra
+  end
+
+  %% Flows
+  app -->|"HTTP/REST\nbooking/start/return"| rental
+  rental -->|"Publish events"| bus
+  billing -->|"Subscribe rental events\nBilling events"| bus
+  partner -->|"Subscribe RentalClosed\nusage events"| bus
+  billing -->|"Payment capture API"| payment
+
+  %% Styling
+  classDef container fill:#e0f2fe,stroke:#0369a1,color:#0f172a;
+  classDef core fill:#bae6fd,stroke:#0369a1,color:#0f172a;
+  classDef infra fill:#f8fafc,stroke:#475569,color:#0f172a;
+  classDef external fill:#ede9fe,stroke:#7c3aed,color:#0f172a;

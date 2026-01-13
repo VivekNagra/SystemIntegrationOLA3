@@ -1,0 +1,19 @@
+flowchart LR
+  subgraph Rental
+    B["Booked"] --> A["Active"]
+    A --> R["Returned"]
+    R --> C["Closed"]
+    A -->|"Late return detected"| L["LateReturnDetected"]
+    L --> R
+  end
+
+  subgraph Charge
+    O["Open Charge"] --> I["Insurance fee added (if selected)"]
+    I --> F["Late fee added (if late)"]
+    F --> P["Payment Captured"]
+    P --> RC["Receipt Issued"]
+    P -->|"Capture failed"| PF["Payment Failed"]
+  end
+
+  R -. triggers .-> F
+  P -. informs .-> C

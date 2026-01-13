@@ -1,0 +1,20 @@
+flowchart LR
+  %% People and Systems
+  customer(["Customer\nMobile App User"]):::person
+  partner(["Partner Company\n(Locations)"]):::external
+  payment(["Payment Provider\n(External System)"]):::external
+  system[["MyTrailer System"]]
+
+  %% Flows
+  customer <--> system
+  partner <--> system
+  system <--> payment
+
+  %% Labels
+  customer ---|"Booking, start, return,\nreceipts"| system
+  partner ---|"Location data,\nusage reporting"| system
+  system ---|"Capture payment"| payment
+
+  %% Styling
+  classDef person fill:#fef9c3,stroke:#eab308,color:#0f172a;
+  classDef external fill:#ede9fe,stroke:#7c3aed,color:#0f172a;
