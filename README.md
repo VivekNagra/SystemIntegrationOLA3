@@ -1,4 +1,4 @@
-# System Integration OLA 3 – MyTrailer (DDD Case Study)
+# System Integration OLA 3 – MyTrailer 
 
 This repository contains the documentation and design artifacts for the **MyTrailer short-term trailer rental** case study.
 The focus is on **requirements discovery (Event Storming)**, **Domain-Driven Design (strategic + tactical)**, and the **flow of messages between services** in a proposed architecture.
