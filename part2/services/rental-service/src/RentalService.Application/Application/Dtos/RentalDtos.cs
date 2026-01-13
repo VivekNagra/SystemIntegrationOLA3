@@ -32,3 +32,15 @@ public sealed record ReturnRentalResponseDto(
     bool IsLate,
     DateTime AllowedEndTime
 );
+
+public sealed record RentalDetailsResponseDto(
+    Guid RentalId,
+    string TrailerId,
+    string CustomerId,
+    DateTime StartTime,
+    DateTime AllowedEndTime,
+    DateTime? ReturnTime,
+    bool InsuranceSelected,
+    string Status
+);
+

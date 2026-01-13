@@ -21,15 +21,8 @@ public sealed class BookingsController : ControllerBase
         CancellationToken ct)
     {
         var result = await _useCase.ExecuteAsync(req, ct);
-        return CreatedAtAction(nameof(GetById), new { rentalId = result.RentalId }, result);
-    }
 
-    // For demo convenience (no separate query model)
-    [HttpGet("{rentalId:guid}")]
-    public ActionResult<object> GetById(Guid rentalId)
-    {
-        // We keep this endpoint minimal for now.
-        // Query side (read models) can be added later if needed.
-        return Ok(new { rentalId });
+        // After creation, the canonical read endpoint is GET /rentals/{rentalId}
+        return Created($"/rentals/{result.RentalId}", result);
     }
 }

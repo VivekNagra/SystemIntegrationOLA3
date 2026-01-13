@@ -27,6 +27,8 @@ builder.Services.AddHttpClient<IBillingClient, BillingHttpClient>(client =>
 builder.Services.AddScoped<CreateBookingUseCase>();
 builder.Services.AddScoped<StartRentalUseCase>();
 builder.Services.AddScoped<ReturnRentalUseCase>();
+builder.Services.AddScoped<GetRentalUseCase>();
+
 
 var app = builder.Build();
 

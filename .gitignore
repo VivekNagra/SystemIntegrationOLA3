@@ -2,14 +2,27 @@
 .DS_Store
 Thumbs.db
 
-# Editors
+# Editors/IDE
 .vscode/
 .idea/
+.vs/
+*.suo
+*.user
+*.userprefs
+*.csproj.user
+*.DotSettings.user
+*.VisualState.xml
 
-# Temporary / exports
+# .NET build output
+**/bin/
+**/obj/
+**/TestResult*/
+**/TestResults/
+
+# Logs/temp
 *.tmp
 *.log
 *.bak
 
-# If you export diagrams from draw.io as backups
+# Diagram backups
 *.drawio.bak
