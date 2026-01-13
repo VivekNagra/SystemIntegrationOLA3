@@ -14,7 +14,7 @@ flowchart LR
   %% Flows
   app -->|"HTTP/REST\nbooking/start/return"| rental
   rental -->|"Publish events"| bus
-  billing -->|"Subscribe rental events\nBilling events"| bus
+  billing -->|"Subscribe: rental events\nPublish: billing events"| bus
   partner -->|"Subscribe RentalClosed\nusage events"| bus
   billing -->|"Payment capture API"| payment
 

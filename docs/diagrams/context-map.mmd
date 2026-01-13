@@ -8,7 +8,7 @@ flowchart LR
   %% Relationships (Context Map)
   ID -->|"Upstream identity provider\n(customerId, auth)"| RENTAL
   RENTAL -->|"Published Language / Events\nBookingAccepted, RentalStarted,\nTrailerReturned, RentalClosed"| BILL
-  RENTAL -->|"Published Language / Events\nRentalClosed, LocationUsageRecorded"| PARTNER
+  RENTAL -->|"Published Language / Events\nRentalClosed"| PARTNER
 
   %% Styling
   classDef core fill:#e0f2fe,stroke:#0369a1,color:#0f172a;
