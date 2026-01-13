@@ -1,122 +1,101 @@
-# 2. Ubiquitous Language
+# 1. Scope and Assumptions
 
-This document defines the **Ubiquitous Language** for the MyTrailer short-term rental solution. The goal is to ensure that the same terms and meanings are used consistently across Event Storming, strategic DDD, tactical DDD, and the architecture/message flow documentation.
+This document defines what is included in the System Integration OLA 3 case study for **MyTrailer** and what is explicitly excluded. The purpose is to keep the domain model and architectural decisions consistent with the case description and to document any assumptions made where the case leaves details open.
 
-The definitions below are intentionally written in business language first, with light technical clarifications where needed.
+## 1.1 Scope (In Scope)
 
-## 2.1 Core Concepts
+### Short-term rental via mobile app
+- Customers can **book and rent a trailer using the MyTrailer mobile application**.
+- The rental is considered **short-term**:
+  - Maximum rental duration is **24 hours**, and
+  - The rental must **always end by midnight at the latest**, even if 24 hours has not passed.
+- A trailer is identified by:
+  - `locationId` (partner location), and
+  - `trailerNumber` (number within that location).
 
-### MyTrailer
-The product/service that enables customers to book and rent trailers from partner locations using a mobile application.
+### Booking and rental lifecycle
+- Booking a specific trailer for a short-term rental.
+- Starting a rental (handover/pick-up) for a booking.
+- Returning the trailer and closing the rental.
+- Enforcing time-related business rules (max 24 hours and midnight cut-off).
+- Handling booking conflicts (e.g., trailer already booked for the requested time).
 
-### Customer
-A person using the MyTrailer mobile app to book and rent trailers. In the model, a customer is represented by a `customerId`.
+### Pricing elements relevant to the case
+- The base trailer rental price is **0 DKK** (the business model relies on partners).
+- Insurance can be purchased as an add-on:
+  - **50 DKK**, optional, and commonly purchased by customers.
+- Late return is handled by applying an **excess rental fee** (late fee).
 
-### Partner
-A company that collaborates with MyTrailer by hosting trailers at one or more locations (e.g., stores or parking areas). Partners pay MyTrailer for providing the service and enabling rentals.
+### Payments (conceptual integration)
+- The model includes the concept of payment processing for:
+  - Insurance, and/or
+  - Late fees (if applicable).
+- Payment processing is treated as integration with an external payment provider (details of provider APIs are not modeled in depth, but the interaction is represented through commands/events and service boundaries).
 
-### Location
-A physical partner site where trailers are available. Each location is identified by a unique `locationId`.
+### Partner/location perspective (high-level)
+- Trailers are hosted at partner companies (locations).
+- The model captures that the business earns revenue through partner collaboration and that rentals can produce “usage” information used for settlement/accounting.
+- Detailed accounting and invoicing flows are considered secondary, but the design acknowledges this aspect through events and bounded context separation.
 
-### Trailer
-A physical trailer placed at a partner location and made available through the MyTrailer app.
+## 1.2 Out of Scope (Excluded)
 
-### TrailerId
-A value object that uniquely identifies a trailer as:
+### Long-term / overnight rentals (website flow)
+- “Long-term rental” (overnight) is **not handled by the mobile app** and follows a separate process via the website and specialist locations.
+- The long-term rental business process and its operational setup is out of scope for this assignment.
 
-- `TrailerId = (locationId, trailerNumber)`
+### Physical operations not described in detail
+- Exact hardware details (locks, sensors, physical key exchange) are not specified.
+- The model may refer to “pickup” and “return” events, but the underlying physical mechanism is not implemented or detailed beyond what is necessary to describe the domain.
 
-This reflects the case description that trailers are referenced by both the partner location and the trailer number.
+### Claims handling / insurance case management
+- While insurance purchase is in scope, **claims processing** (damage assessment, reimbursement workflow, disputes) is not modeled in depth. This may be mentioned as a future extension.
 
-### Booking
-A reservation made by a customer for a specific trailer and an intended rental period. A booking can be accepted or rejected based on business rules (e.g., availability, time constraints).
+## 1.3 Key Business Rules (Explicit)
 
-### Rental
-The active period where the customer is in possession of the trailer. A rental is the lifecycle that begins when the trailer is picked up/started and ends when the trailer is returned and the rental is closed.
+1. **Maximum duration rule**  
+   A short-term rental can last at most **24 hours**.
 
-## 2.2 Time and Pricing Terms
+2. **Midnight cut-off rule**  
+   Regardless of the start time, the rental must end by **midnight** at the latest.
 
-### Short-term rental
-A rental performed via the mobile app with these constraints:
-- Maximum duration: **24 hours**
-- Must end by **midnight at the latest**
+3. **Trailer identification rule**  
+   A trailer is uniquely identified by `(locationId, trailerNumber)`.
 
-This is a core business rule and shapes the domain model and message flows.
+4. **Late return rule**  
+   If a trailer is returned after its allowed end time, an **excess rental fee** (late fee) must be applied before closing the rental.
 
-### StartTime
-The time the rental starts (or is considered started). In the model, the start time is used to compute the allowed end time.
+5. **Insurance rule**  
+   Insurance is optional and costs **50 DKK**.
 
-### AllowedEndTime
-The latest time the trailer may be returned without being considered late. This time is calculated using the rule:
+## 1.4 Assumptions
 
-`AllowedEndTime = min(StartTime + 24 hours, midnight cut-off)`
+### Identity and access
+- Customers are authenticated in the app and can be represented by a `customerId`.
 
-The “midnight cut-off” is justified directly from the case text stating that the rental must end by midnight at the latest.
+### Booking and availability
+- A trailer cannot have overlapping rentals. The system enforces this rule when accepting a booking.
+- Availability is determined by existing bookings/rentals for the same `(locationId, trailerNumber)` within the requested time window.
 
-### ReturnTime
-The time the trailer is actually returned.
+### Time handling
+- All times are treated consistently (e.g., a single timezone) and the “midnight” rule refers to local midnight for the relevant location.
+- The allowed end time is calculated as:
 
-### Late return
-A return where `ReturnTime > AllowedEndTime`.
+  `allowedEndTime = min(startTime + 24 hours, midnight cut-off)`
 
-### Excess rental fee (Late fee)
-A fee applied when a trailer is returned late. The case describes that late return results in an excess rental fee; the exact calculation method is treated as a design decision (documented later).
+  This is justified from the case requirement that short-term rentals must end by midnight at the latest.
 
-### Insurance
-An optional add-on purchased by the customer during the rental flow. In the case, the insurance is described as commonly purchased and has a fixed price.
+### Payments
+- Payment handling is modeled as a separate responsibility (bounded context/service).
+- Insurance and late fees are represented as billable line items in a charge.
+- A “payment provider” exists externally; integration is represented conceptually rather than implemented against a real provider API.
 
-### Insurance fee
-A fixed price of **50 DKK** when insurance is selected.
+### Partner settlement
+- Partner settlement is modeled at a high level as usage recording and potential invoicing.
+- The detailed financial agreement is not specified; the model focuses on capturing rental usage events needed for settlement.
 
-### Base rental price
-The trailer rental price is **0 DKK**. The business earns revenue through partner collaboration rather than direct rental cost.
+## 1.5 Open Questions (Not resolved by the case)
 
-## 2.3 Billing and Payment Terms
-
-### Charge
-A billable financial representation for a rental. A charge can contain line items (e.g., insurance fee, late fee) and is used to initiate payment processing.
-
-### Line item
-A priced component of a charge, such as:
-- Insurance fee (50 DKK)
-- Late fee (excess rental fee)
-
-### Payment authorization
-An optional step where a payment method is validated or reserved. The model may include authorization depending on the chosen architecture.
-
-### Payment capture
-The step where money is actually collected from the customer (e.g., to pay insurance or late fees).
-
-### Receipt
-A confirmation produced after payment capture.
-
-## 2.4 Operational Terms
-
-### Availability
-A trailer is available if it is not already booked/rented for an overlapping period. The system enforces availability when accepting bookings.
-
-### Booking conflict
-A situation where a booking request cannot be accepted because the trailer is not available for the requested period.
-
-### Rental closure
-The final state transition where the rental is considered complete. Typically requires that:
-- the trailer is returned, and
-- any required fees are added, and
-- payment has been captured (if there is a non-zero amount)
-
-## 2.5 External Systems
-
-### Payment provider
-An external system used for payment authorization and capture. The design models this as an integration boundary rather than implementing a specific provider.
-
-### Notification service (optional)
-An external service used for sending confirmations, receipts, or reminders. Included as an optional integration point if needed for message flow clarity.
-
-## 2.6 Events and Commands (Naming Convention)
-
-To keep documentation consistent:
-
-- **Commands** are written as imperative verbs (e.g., `RequestBooking`, `StartRental`, `ReturnTrailer`).
-- **Domain Events** are written in past tense (e.g., `BookingAccepted`, `RentalStarted`, `TrailerReturned`, `PaymentCaptured`).
-
-This convention is used throughout the Event Storming and later tactical DDD sections.
+- Is insurance selected at booking time, at rental start, or both?
+- Does the system authorize payment at booking, or only capture payment at rental closure?
+- How is the excess rental fee calculated (fixed fee, per-hour, per-interval)?
+- Are there grace periods for pickup/return around the booked window?
