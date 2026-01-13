@@ -190,14 +190,12 @@ The Event Storming results are summarized into the following artifact types:
 
 This section references two diagrams:
 
-1. **Event Storming board (raw)** – a screenshot from a collaborative board tool showing notes and lanes  
-   Suggested file name: `docs/diagrams/event-storming-board.png`
-
-2. **Cleaned Event Storming result** – a simplified, readable diagram that is easy to present and grade  
-   Suggested file name: `docs/diagrams/event-storming-cleaned.png`
-
-Once the diagrams are created, embed them here:
-
-![Event Storming Board](diagrams/event-storming-board.png)
-
+ **Cleaned Event Storming result** –
+Find the diagramhere: 
 ![Event Storming Cleaned Result](diagrams/event-storming-cleaned.png)
+
+**late return focus** - focuses more on the late return system
+Find the diagram here:
+![Late Return Focus](diagrams/late-return-focus.png)
+
+
