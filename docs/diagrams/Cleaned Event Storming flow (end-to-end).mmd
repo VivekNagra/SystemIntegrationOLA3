@@ -1,0 +1,65 @@
+flowchart LR
+  %% Lanes (visual grouping)
+  subgraph L1[Booking]
+    C1[/"Command:\nRequestBooking(trailerId, customerId, desiredStartTime)"/]
+    E1((Event:\nBookingRequested))
+    P1{{Policy:\nallowedEndTime = min(start+24h,\nmidnight cut-off)}}
+    E2((Event:\nBookingAccepted))
+    E3((Event:\nBookingRejected\n(reason: not available / invalid time)))
+    R1[[Read Model:\nAvailability by location]]
+  end
+
+  subgraph L2[Insurance (Optional)]
+    C2[/"Command:\nSelectInsurance(rentalId, selected)"/]
+    E4((Event:\nInsuranceSelected))
+  end
+
+  subgraph L3[Start Rental]
+    C3[/"Command:\nStartRental(rentalId)"/]
+    E5((Event:\nRentalStarted))
+    R2[[Read Model:\nActive rental status]]
+  end
+
+  subgraph L4[Return]
+    C4[/"Command:\nReturnTrailer(rentalId, returnTime)"/]
+    E6((Event:\nTrailerReturned))
+    P2{{Policy:\nIf returnTime > allowedEndTime\nthen LateReturnDetected}}
+    E7((Event:\nLateReturnDetected))
+  end
+
+  subgraph L5[Billing & Payment]
+    C5[/"Command:\nCreateChargeForRental(rentalId)"/]
+    E8((Event:\nChargeCreated))
+    C6[/"Command:\nAddInsuranceFee(50 DKK)"/]
+    E9((Event:\nInsuranceFeeAdded))
+    C7[/"Command:\nAddLateFee(amount)"/]
+    E10((Event:\nLateFeeAdded))
+    C8[/"Command:\nCapturePayment(chargeId)"/]
+    E11((Event:\nPaymentCaptured))
+    E12((Event:\nReceiptIssued))
+    X1[[External System:\nPayment Provider]]
+  end
+
+  subgraph L6[Close]
+    E13((Event:\nRentalClosed))
+    R3[[Read Model:\nRental history + Receipt]]
+  end
+
+  %% Flow
+  C1 --> E1 --> P1
+  P1 --> E2
+  P1 --> E3
+
+  E2 --> R1
+  E2 --> C2 --> E4 --> C3
+  E2 --> C3
+
+  C3 --> E5 --> R2 --> C4
+  C4 --> E6 --> P2
+  P2 -->|On time| C5
+  P2 -->|Late| E7 --> C5
+
+  C5 --> E8 --> C6 --> E9 --> C8
+  E8 --> C7 --> E10 --> C8
+
+  C8 --> X1 --> E11 --> E12 --> E13 --> R3
