@@ -1,0 +1,56 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v10.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v10.0": {
+      "BillingService.Infrastructure/1.0.0": {
+        "dependencies": {
+          "BillingService.Application": "1.0.0",
+          "BillingService.Domain": "1.0.0"
+        },
+        "runtime": {
+          "BillingService.Infrastructure.dll": {}
+        }
+      },
+      "BillingService.Application/1.0.0": {
+        "dependencies": {
+          "BillingService.Domain": "1.0.0"
+        },
+        "runtime": {
+          "BillingService.Application.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "BillingService.Domain/1.0.0": {
+        "runtime": {
+          "BillingService.Domain.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "BillingService.Infrastructure/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "BillingService.Application/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "BillingService.Domain/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

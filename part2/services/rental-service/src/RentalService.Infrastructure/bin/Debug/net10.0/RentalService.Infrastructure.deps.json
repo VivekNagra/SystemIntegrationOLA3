@@ -1,0 +1,56 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v10.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v10.0": {
+      "RentalService.Infrastructure/1.0.0": {
+        "dependencies": {
+          "RentalService.Application": "1.0.0",
+          "RentalService.Domain": "1.0.0"
+        },
+        "runtime": {
+          "RentalService.Infrastructure.dll": {}
+        }
+      },
+      "RentalService.Application/1.0.0": {
+        "dependencies": {
+          "RentalService.Domain": "1.0.0"
+        },
+        "runtime": {
+          "RentalService.Application.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "RentalService.Domain/1.0.0": {
+        "runtime": {
+          "RentalService.Domain.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "RentalService.Infrastructure/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "RentalService.Application/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "RentalService.Domain/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

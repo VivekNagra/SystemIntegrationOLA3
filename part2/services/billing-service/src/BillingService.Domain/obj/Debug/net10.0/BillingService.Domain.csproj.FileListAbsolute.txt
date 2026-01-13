@@ -1,0 +1,12 @@
+C:\Dev\School\SystemIntegrationOLA3\part2\services\billing-service\src\BillingService.Domain\bin\Debug\net10.0\BillingService.Domain.deps.json
+C:\Dev\School\SystemIntegrationOLA3\part2\services\billing-service\src\BillingService.Domain\bin\Debug\net10.0\BillingService.Domain.dll
+C:\Dev\School\SystemIntegrationOLA3\part2\services\billing-service\src\BillingService.Domain\bin\Debug\net10.0\BillingService.Domain.pdb
+C:\Dev\School\SystemIntegrationOLA3\part2\services\billing-service\src\BillingService.Domain\obj\Debug\net10.0\BillingService.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Dev\School\SystemIntegrationOLA3\part2\services\billing-service\src\BillingService.Domain\obj\Debug\net10.0\BillingService.Domain.AssemblyInfoInputs.cache
+C:\Dev\School\SystemIntegrationOLA3\part2\services\billing-service\src\BillingService.Domain\obj\Debug\net10.0\BillingService.Domain.AssemblyInfo.cs
+C:\Dev\School\SystemIntegrationOLA3\part2\services\billing-service\src\BillingService.Domain\obj\Debug\net10.0\BillingService.Domain.csproj.CoreCompileInputs.cache
+C:\Dev\School\SystemIntegrationOLA3\part2\services\billing-service\src\BillingService.Domain\obj\Debug\net10.0\BillingService.Domain.sourcelink.json
+C:\Dev\School\SystemIntegrationOLA3\part2\services\billing-service\src\BillingService.Domain\obj\Debug\net10.0\BillingService.Domain.dll
+C:\Dev\School\SystemIntegrationOLA3\part2\services\billing-service\src\BillingService.Domain\obj\Debug\net10.0\refint\BillingService.Domain.dll
+C:\Dev\School\SystemIntegrationOLA3\part2\services\billing-service\src\BillingService.Domain\obj\Debug\net10.0\BillingService.Domain.pdb
+C:\Dev\School\SystemIntegrationOLA3\part2\services\billing-service\src\BillingService.Domain\obj\Debug\net10.0\ref\BillingService.Domain.dll
