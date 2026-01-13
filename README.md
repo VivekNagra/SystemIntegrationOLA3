@@ -19,4 +19,20 @@ Start here (in order):
 
 ## Diagrams
 
-All diagrams used in the documentation are stored in: `docs/diagrams/`.
+All diagrams are stored in `docs/diagrams/`.
+
+Mermaid sources (for regeneration):
+- `context-map.mmd` → `context-map.png`
+- `c4-system-context.mmd` → `c4-system-context.png`
+- `c4-container.mmd` → `c4-container.png`
+- `message-flows.mmd` → `message-flows.png`
+- `tactical-lifecycle.mmd` → `tactical-lifecycle.png`
+
+Regenerate (requires Node/npm):
+```bash
+npx @mermaid-js/mermaid-cli -i docs/diagrams/context-map.mmd -o docs/diagrams/context-map.png
+npx @mermaid-js/mermaid-cli -i docs/diagrams/c4-system-context.mmd -o docs/diagrams/c4-system-context.png
+npx @mermaid-js/mermaid-cli -i docs/diagrams/c4-container.mmd -o docs/diagrams/c4-container.png
+npx @mermaid-js/mermaid-cli -i docs/diagrams/message-flows.mmd -o docs/diagrams/message-flows.png
+npx @mermaid-js/mermaid-cli -i docs/diagrams/tactical-lifecycle.mmd -o docs/diagrams/tactical-lifecycle.png
+```
