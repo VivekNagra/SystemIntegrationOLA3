@@ -17,6 +17,10 @@ Start here (in order):
 6. [Message Flows](docs/06-message-flows.md)
 7. [Definition of Done](docs/07-definition-of-done.md)
 
+## Part 2 (implementation)
+
+For the runnable services (rental + billing) and demo scripts, see `part2/`. The part2 README has run/test instructions and the automated demo script (`run-demo.ps1`).
+
 ## Diagrams
 
 All diagrams are stored in `docs/diagrams/`.
